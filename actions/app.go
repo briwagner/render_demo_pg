@@ -1,6 +1,8 @@
 package actions
 
 import (
+	"fmt"
+
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/envy"
 	forcessl "github.com/gobuffalo/mw-forcessl"
@@ -42,7 +44,7 @@ func App() *buffalo.App {
 		})
 
 		// Automatically redirect to SSL
-		app.Use(forceSSL())
+		// app.Use(forceSSL())
 
 		// Log request parameters (filters apply).
 		app.Use(paramlogger.ParameterLogger)
@@ -55,6 +57,8 @@ func App() *buffalo.App {
 		//  c.Value("tx").(*pop.Connection)
 		// Remove to disable this.
 		app.Use(popmw.Transaction(models.DB))
+
+		fmt.Printf("DB connection is %s\n", models.DB.URL())
 
 		// Setup and use translations:
 		app.Use(translations())
